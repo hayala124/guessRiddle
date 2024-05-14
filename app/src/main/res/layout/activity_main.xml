@@ -6,15 +6,118 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnOpenRiddle"
+    <TextView
+        android:id="@+id/textNameRiddle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Загадка"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textRiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:freezesText="true"
+        android:gravity="center"
+        android:padding="30dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textNameRiddle" />
+
+    <Button
+        android:id="@+id/btnStartOver"
+        style="@style/styleForButton"
+        android:text="НАЧАТЬ СНАЧАЛА"
+        android:visibility="invisible"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textRiddle" />
+
+    <Button
+        android:id="@+id/btnExit"
+        style="@style/styleForButton"
+        android:text="ВЫХОД"
+        android:visibility="invisible"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="@id/btnStartOver"
+        app:layout_constraintStart_toStartOf="@id/btnStartOver"
+        app:layout_constraintTop_toBottomOf="@id/btnStartOver" />
+
+    <TextView
+        android:id="@+id/textNameYourAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Ваш ответ"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/linearLayoutCountAnswers"
+        app:layout_constraintStart_toStartOf="@id/btnStatistics" />
+
+    <TextView
+        android:id="@+id/textYourAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/linearLayoutCountAnswers"
+        app:layout_constraintEnd_toEndOf="@id/btnStatistics" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutCountAnswers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnStatistics"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textCountAnswers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textAllAnswers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/10"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnStatistics"
+        style="@style/styleForButton"
+        android:enabled="false"
+        android:text="Статистика"
+        app:cornerRadius="5dp"
+        app:layout_constraintBottom_toTopOf="@id/btnOpenRiddle"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnOpenRiddle"
+        style="@style/styleForButton"
         android:text="Загадка"
         app:cornerRadius="5dp"
-        android:backgroundTint="#DD346D"
-        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/pink"
+        app:layout_constraintBottom_toTopOf="@id/btnAnswer"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnAnswer"
+        style="@style/styleForButton"
+        android:enabled="false"
+        android:text="Ответ"
+        app:cornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
