@@ -6,43 +6,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.Toast
-import com.hayala.guessriddle.databinding.ActivityMainBinding
 import com.hayala.guessriddle.databinding.ActivityRiddleBinding
 import kotlinx.parcelize.Parcelize
-import java.lang.StrictMath.random
-import kotlin.properties.Delegates
-import kotlin.random.Random
 
 class RiddleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRiddleBinding
-
-    private var listOfAnswers =
-        listOf("замок", "лёд", "часы", "неправильно", "3", "1")
-    //, "", "", "", "", "", "", "", "", "")
-
-    private var count by Delegates.notNull<Int>()
+    private var listOfAnswers = listOf("замок", "лёд", "часы", "неправильно", "3", "1") //, "", "", "", "", "", "", "", "", "")
     lateinit var state: State
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRiddleBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = ActivityRiddleBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
         binding.btnCheck.setOnClickListener { buttonCheckPressed() }
-        val dataOne = intent.getStringExtra("numberPageOne")
-        binding.textView1.text = dataOne
-        count = dataOne.toString().toInt() + 1
 
         val shuffledList = listOfAnswers.shuffled()
 
         // Шаг 3: Создание нового списка и копирование перемешанных элементов
         val newList = mutableListOf<String>()
         shuffledList.forEach { newList.add(it) }
-
-        // Вывод нового списка
-        println("New List: $newList")
 
         val radioGroup = binding.radioGroupAnswers
         for (option in newList) {
@@ -57,19 +39,10 @@ class RiddleActivity : AppCompatActivity() {
             state.buttonCheckIsEnabled = true
             binding.btnCheck.isEnabled = state.buttonCheckIsEnabled
 
-            var intent2 = Intent(this, MainActivity::class.java)
-
+           /* var intent2 = Intent(this, MainActivity::class.java)
+            intent2.putExtra("numberPageTwo", selectedButton.text.toString())*/
             saveState()
         }
-
-        /*binding.radioGroupAnswers.setOnCheckedChangeListener { group, checkedId ->
-            // Проверяем, была ли выбрана какая-либо радиокнопка
-            if (checkedId != -1) {
-                state.buttonCheckIsEnabled = !state.buttonCheckIsEnabled
-                state.buttonCheckColor = getColor(R.color.pink)
-            }
-            saveState()
-        }*/
 
         state = if (savedInstanceState == null) {
             State(
@@ -97,10 +70,13 @@ class RiddleActivity : AppCompatActivity() {
     }*/
 
     fun buttonCheckPressed() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("numberPageTwo", count.toString())
-        startActivity(intent)
+        val data = intent.getStringExtra("numberPageOne")
+        val count = data.toString().toInt() + 1
+        val intent2 = Intent(this, MainActivity::class.java)
+        intent2.putExtra("twoName", count.toString())
+        setResult(RESULT_OK, intent2)
         saveState()
+        finish()
     }
 
     private fun saveState() = with(binding) {
