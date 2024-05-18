@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
  "" to ""*/
     )
 
-    private var myText = "0"
+   // private lateinit var count: TextView
+    private var count = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
@@ -47,14 +48,15 @@ class MainActivity : AppCompatActivity() {
         binding.btnOpenRiddle.setOnClickListener { openRiddleActivity() }
         binding.btnExit.setOnClickListener { exitApplication() }
         binding.btnAnswer.setOnClickListener { giveAnswerToRiddle() }
+       // count = binding.textCountAnswers.
 
-        launcher =
+       /* launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == RESULT_OK) {
                     myText = result.data?.getStringExtra("twoName").toString()
                     binding.textCountAnswers.text = myText
                 }
-            }
+            }*/
 
         state = if (savedInstanceState == null) {
             State(
@@ -83,19 +85,23 @@ class MainActivity : AppCompatActivity() {
         state.buttonOpenRiddleColor = getColor(R.color.gray)
         state.buttonAnswerIsEnabled = !state.buttonAnswerIsEnabled
         state.buttonAnswerColor = getColor(R.color.pink)
-        state.countOfSolvedRiddles = myText.toInt()
+        count = binding.textCountAnswers.text.toString().toInt() + 1
+        state.countOfSolvedRiddles = count
         saveState()
     }
 
     private fun giveAnswerToRiddle() {
-        val intent = Intent(this, RiddleActivity::class.java)
+      /*  val intent = Intent(this, RiddleActivity::class.java)
         intent.putExtra("numberPageOne", binding.textCountAnswers.text.toString())
-        launcher?.launch(intent)
+        launcher?.launch(intent)*/
+
+        val intent = Intent(this, RiddleActivity::class.java)
+        startActivity(intent)
 
         state.buttonAnswerIsEnabled = !state.buttonAnswerIsEnabled
         state.buttonAnswerColor = getColor(R.color.gray)
 
-        if (state.countOfSolvedRiddles.toString().toInt() != 2) {
+        if (state.countOfSolvedRiddles.toString().toInt() != 10) {
             state.buttonOpenRiddleIsEnabled = !state.buttonOpenRiddleIsEnabled
             state.buttonOpenRiddleColor = getColor(R.color.pink)
         }

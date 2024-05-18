@@ -39,8 +39,9 @@ class RiddleActivity : AppCompatActivity() {
             state.buttonCheckIsEnabled = true
             binding.btnCheck.isEnabled = state.buttonCheckIsEnabled
 
-           /* var intent2 = Intent(this, MainActivity::class.java)
-            intent2.putExtra("numberPageTwo", selectedButton.text.toString())*/
+            var intent2 = Intent(this, MainActivity::class.java)
+            intent2.putExtra("numberPageTwo", selectedButton.text.toString())
+
             saveState()
         }
 
@@ -70,11 +71,11 @@ class RiddleActivity : AppCompatActivity() {
     }*/
 
     fun buttonCheckPressed() {
-        val data = intent.getStringExtra("numberPageOne")
+        /*val data = intent.getStringExtra("numberPageOne")
         val count = data.toString().toInt() + 1
         val intent2 = Intent(this, MainActivity::class.java)
         intent2.putExtra("twoName", count.toString())
-        setResult(RESULT_OK, intent2)
+        setResult(RESULT_OK, intent2)*/
         saveState()
         finish()
     }
