@@ -8,11 +8,28 @@
     <style name="Theme.GuessRiddle" parent="Base.Theme.GuessRiddle" />
 
     <style name="styleForButton">
-        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">30dp</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginBottom">25dp</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
         <item name="backgroundTint">@color/gray</item>
+    </style>
+
+    <style name="styleForButton2">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="backgroundTint">@color/gray</item>
+    </style>
+
+    <style name="styleForTextActivity3">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:freezesText">true</item>
     </style>
 </resources>
