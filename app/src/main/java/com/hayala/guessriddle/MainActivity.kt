@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var riddle: String
     private lateinit var state: State
     private var launcher: ActivityResultLauncher<Intent>? = null
-
-    private val mapOfRiddlesAndAnswers = mapOf(
+    private lateinit var keyOfMap: String
+    private val mapOfRiddlesAndAnswers = mutableMapOf(
         "замок" to "Не лает, не кусает, а в дом не пускает?",
         "лёд" to "В огне не горит, в воде не тонет?",
         "часы" to "Что всегда идёт, а с места не сойдёт?",
@@ -62,25 +62,22 @@ class MainActivity : AppCompatActivity() {
                     if (state.countOfSolvedRiddles.toString().toInt() != 10) {
                         state.buttonOpenRiddleIsEnabled = !state.buttonOpenRiddleIsEnabled
                         state.buttonOpenRiddleColor = getColor(R.color.pink)
-                    }
-                    else {
+                    } else {
                         state.buttonStatisticsIsEnabled = !state.buttonStatisticsIsEnabled
                         state.buttonStatisticsColor = getColor(R.color.pink)
                     }
 
-                    if (mapOfRiddlesAndAnswers.containsKey(myAnswer)) {
-                        val value = mapOfRiddlesAndAnswers[myAnswer]
-                        if (value.toString() == riddle) {
-                            state.textAnswerColor = Color.GREEN
-                            state.countRightAnswer += 1
-                            Toast.makeText(applicationContext, "Right - ${state.countRightAnswer}", Toast.LENGTH_SHORT).show()
-                        }
-                        else {
-                            state.textAnswerColor = Color.RED
-                            state.countWrongAnswer += 1
-                            Toast.makeText(applicationContext, "Wrong - ${state.countWrongAnswer}", Toast.LENGTH_SHORT).show()
-                        }
+                    // Проверка правильности ответа пользователя
+                    val value = mapOfRiddlesAndAnswers[myAnswer]
+                    if (value.toString() == riddle) {
+                        state.textAnswerColor = Color.GREEN
+                        state.countRightAnswer += 1
+                    } else {
+                        state.textAnswerColor = Color.RED
+                        state.countWrongAnswer += 1
                     }
+                    // Удаление показанных пользователю загадок
+                    mapOfRiddlesAndAnswers.keys.remove(keyOfMap)
 
                     saveState()
                 }
@@ -110,7 +107,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openRiddleActivity() {
-        riddle = mapOfRiddlesAndAnswers[mapOfRiddlesAndAnswers.keys.random()].toString()
+        keyOfMap = mapOfRiddlesAndAnswers.keys.random()
+        riddle = mapOfRiddlesAndAnswers[keyOfMap].toString()
         textViewRiddle.text = riddle
         state.buttonOpenRiddleIsEnabled = !state.buttonOpenRiddleIsEnabled
         state.buttonOpenRiddleColor = getColor(R.color.gray)
@@ -120,13 +118,14 @@ class MainActivity : AppCompatActivity() {
         state.countOfSolvedRiddles = count
         state.textAnswerColor = Color.WHITE
         binding.textYourAnswer.text = " "
+
         saveState()
     }
 
     private fun giveAnswerToRiddle() {
-      /*  val intent = Intent(this, RiddleActivity::class.java)
-        intent.putExtra("numberPageOne", binding.textCountAnswers.text.toString())
-        launcher?.launch(intent)*/
+        /*  val intent = Intent(this, RiddleActivity::class.java)
+          intent.putExtra("numberPageOne", binding.textCountAnswers.text.toString())
+          launcher?.launch(intent)*/
         val intent = Intent(this, RiddleActivity::class.java)
         launcher?.launch(intent)
 
@@ -176,8 +175,13 @@ class MainActivity : AppCompatActivity() {
     ) : Parcelable
 
     companion object {
-        @JvmStatic private val KEY_STATE = "STATE"
-        @JvmStatic private val KEY_COUNT_RIGHT_ANSWER = "RIGHT_ANSWER"
-        @JvmStatic private val KEY_COUNT_WRONG_ANSWER = "WRONG_ANSWER"
+        @JvmStatic
+        private val KEY_STATE = "STATE"
+
+        @JvmStatic
+        private val KEY_COUNT_RIGHT_ANSWER = "RIGHT_ANSWER"
+
+        @JvmStatic
+        private val KEY_COUNT_WRONG_ANSWER = "WRONG_ANSWER"
     }
 }
