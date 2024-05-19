@@ -11,8 +11,9 @@ import kotlinx.parcelize.Parcelize
 
 class RiddleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRiddleBinding
+    private lateinit var selectedButton: RadioButton
     private var listOfAnswers = listOf("замок", "лёд", "часы", "неправильно", "3", "1") //, "", "", "", "", "", "", "", "", "")
-    lateinit var state: State
+    private lateinit var state: State
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +35,13 @@ class RiddleActivity : AppCompatActivity() {
         }
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
-            val selectedButton = findViewById<RadioButton>(checkedId)
+            selectedButton = findViewById<RadioButton>(checkedId)
             state.buttonCheckColor = getColor(R.color.pink)
             state.buttonCheckIsEnabled = true
             binding.btnCheck.isEnabled = state.buttonCheckIsEnabled
 
-            var intent2 = Intent(this, MainActivity::class.java)
-            intent2.putExtra("numberPageTwo", selectedButton.text.toString())
-
+           /* var intent2 = Intent(this, MainActivity::class.java)
+            intent2.putExtra("numberPageTwo", selectedButton.text.toString())*/
             saveState()
         }
 
@@ -72,10 +72,10 @@ class RiddleActivity : AppCompatActivity() {
 
     fun buttonCheckPressed() {
         /*val data = intent.getStringExtra("numberPageOne")
-        val count = data.toString().toInt() + 1
+        val count = data.toString().toInt() + 1*/
         val intent2 = Intent(this, MainActivity::class.java)
-        intent2.putExtra("twoName", count.toString())
-        setResult(RESULT_OK, intent2)*/
+        intent2.putExtra("twoName", selectedButton.text.toString())
+        setResult(RESULT_OK, intent2)
         saveState()
         finish()
     }
