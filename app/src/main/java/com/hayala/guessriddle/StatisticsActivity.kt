@@ -15,6 +15,7 @@ class StatisticsActivity : AppCompatActivity() {
         val countWrongAnswer = intent.getStringExtra("countWrongAnswers")
         binding.textCountRightAnswer.text = countRightAnswer.toString()
         binding.textCountWrongAnswer.text = countWrongAnswer.toString()
+
     }
 
     private fun getTheMainPage() {

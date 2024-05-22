@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.TypedValue
 import android.widget.RadioButton
 import com.hayala.guessriddle.databinding.ActivityRiddleBinding
 import kotlinx.parcelize.Parcelize
@@ -12,7 +13,7 @@ import kotlinx.parcelize.Parcelize
 class RiddleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRiddleBinding
     private lateinit var selectedButton: RadioButton
-    private var listOfAnswers = listOf("замок", "лёд", "часы", "неправильно", "3", "1") //, "", "", "", "", "", "", "", "", "")
+    private var listOfAnswers = listOf("замок", "лёд", "часы", "неправильно", "3", "1", "эхо", "якорь", "столовые приборы", "возможность", "проблемы", "возраст", "уроки", "вишня", "дорога", "лестница", "безрукий человек", "корм для животных", "бумеранг")
     private lateinit var state: State
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,14 +23,14 @@ class RiddleActivity : AppCompatActivity() {
         binding.btnCheck.setOnClickListener { buttonCheckPressed() }
 
         val shuffledList = listOfAnswers.shuffled()
-
-        // Шаг 3: Создание нового списка и копирование перемешанных элементов
+        // Создание нового списка и копирование перемешанных элементов
         val newList = mutableListOf<String>()
         shuffledList.forEach { newList.add(it) }
 
         val radioGroup = binding.radioGroupAnswers
         for (option in newList) {
             val radioButton = RadioButton(this)
+            radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
             radioButton.text = option
             radioGroup.addView(radioButton)
         }
@@ -40,39 +41,19 @@ class RiddleActivity : AppCompatActivity() {
             state.buttonCheckIsEnabled = true
             binding.btnCheck.isEnabled = state.buttonCheckIsEnabled
 
-           /* var intent2 = Intent(this, MainActivity::class.java)
-            intent2.putExtra("numberPageTwo", selectedButton.text.toString())*/
             saveState()
         }
 
-        state = if (savedInstanceState == null) {
-            State(
+        state = savedInstanceState?.getParcelable(KEY_STATE) ?: State(
                 buttonCheckIsEnabled = false,
                 buttonCheckColor = getColor(R.color.gray)
             )
-        } else {
-            savedInstanceState.getParcelable(KEY_STATE)!!
-        }
 
         saveState()
     }
 
-    /*fun onRadioButtonClicked(view: View) {
-        // Получаем ID выбранной радиокнопки
-        val radioButton = view as RadioButton
-        val button = findViewById<Button>(R.id.button)
-
-        // Активируем кнопку отправки, если была выбрана какая-либо радиокнопка
-        if (radioButton.isChecked) {
-            button.isEnabled = true
-        } else {
-            button.isEnabled = false
-        }
-    }*/
 
     fun buttonCheckPressed() {
-        /*val data = intent.getStringExtra("numberPageOne")
-        val count = data.toString().toInt() + 1*/
         val intent2 = Intent(this, MainActivity::class.java)
         intent2.putExtra("twoName", selectedButton.text.toString())
         setResult(RESULT_OK, intent2)
