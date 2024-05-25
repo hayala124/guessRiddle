@@ -21,24 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var state: State
     private lateinit var keyOfMap: String
     private var launcher: ActivityResultLauncher<Intent>? = null
-    private var mapOfRiddlesAndAnswers = mutableMapOf(
-        "замок" to "Не лает, не кусает, а в дом не пускает?",
-        "лёд" to "В огне не горит, в воде не тонет?",
-        "часы" to "Что всегда идёт, а с места не сойдёт?",
-        "неправильно" to "Какое слово всегда пишется неправильно?",
-        "3" to "На столе лежали три огурца и четыре яблока. Ребенок взял со стола одно яблоко. Сколько фруктов осталось на столе?",
-        "1" to "Сколько раз из числа 1111 можно вычесть 1?",
-        "эхо" to "Что не может говорить, но ответит, если к нему обратятся?" ,
-        "якорь" to "Что ты выбрасываешь, когда хочешь использовать, и поднимаешь, когда не хочешь?",
-        "столовые приборы" to "Что ты покупаешь, чтобы поесть, но никогда не съедаешь?",
-        "возможность" to "У чего нет рук, но оно может постучаться к тебе, и если оно это сделало, то лучше открыть?",
-        "проблемы" to "Во что легко попасть, но трудно выбраться?",
-        "возраст" to "Что поднимается, но никогда не опускается?",
-        "уроки" to "Что можно приготовить, но нельзя съесть?",
-        "вишня" to "Красна девица, а сердце – каменное. Что это?",
-        "дорога" to " Что идет то в гору, то с горы, но остается на месте?"
-    )
-    private var map_2 = mapOfRiddlesAndAnswers
+    private lateinit var mapOfRiddlesAndAnswers: MutableMap<String, String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
@@ -48,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnAnswer.setOnClickListener { giveAnswerToRiddle() }
         binding.btnStatistics.setOnClickListener { getStatistics() }
         binding.btnStartOver.setOnClickListener { startOver() }
+        init_map()
 
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -108,6 +92,26 @@ class MainActivity : AppCompatActivity() {
         saveState()
     }
 
+    private fun init_map() {
+        mapOfRiddlesAndAnswers = mutableMapOf(
+            "замок" to "Не лает, не кусает, а в дом не пускает?",
+            "лёд" to "В огне не горит, в воде не тонет?",
+            "часы" to "Что всегда идёт, а с места не сойдёт?",
+            "неправильно" to "Какое слово всегда пишется неправильно?",
+            "3" to "На столе лежали три огурца и четыре яблока. Ребенок взял со стола одно яблоко. Сколько фруктов осталось на столе?",
+            "1" to "Сколько раз из числа 1111 можно вычесть 1?",
+            "эхо" to "Что не может говорить, но ответит, если к нему обратятся?" ,
+            "якорь" to "Что ты выбрасываешь, когда хочешь использовать, и поднимаешь, когда не хочешь?",
+            "столовые приборы" to "Что ты покупаешь, чтобы поесть, но никогда не съедаешь?",
+            "возможность" to "У чего нет рук, но оно может постучаться к тебе, и если оно это сделало, то лучше открыть?",
+            "проблемы" to "Во что легко попасть, но трудно выбраться?",
+            "возраст" to "Что поднимается, но никогда не опускается?",
+            "уроки" to "Что можно приготовить, но нельзя съесть?",
+            "вишня" to "Красна девица, а сердце – каменное. Что это?",
+            "дорога" to " Что идет то в гору, то с горы, но остается на месте?"
+        )
+    }
+
     private fun openRiddleActivity() {
         keyOfMap = mapOfRiddlesAndAnswers.keys.random()
         riddle = mapOfRiddlesAndAnswers[keyOfMap].toString()
@@ -139,7 +143,9 @@ class MainActivity : AppCompatActivity() {
         saveState()
     }
 
+
     private fun startOver() {
+        init_map()
         state.textRiddleVisibility = !state.textRiddleVisibility
         binding.textRiddle.text = " "
         state.buttonStartOverVisibility = !state.buttonStartOverVisibility
@@ -149,7 +155,7 @@ class MainActivity : AppCompatActivity() {
         state.textYourAnswerVisibility = !state.textYourAnswerVisibility
         state.countOfSolvedRiddles = 0
         state.countWrongAnswer = 0
-        state.countWrongAnswer = 0
+        state.countRightAnswer = 0
         state.buttonStatisticsColor = getColor(R.color.gray)
         state.buttonStatisticsIsEnabled = !state.buttonStatisticsIsEnabled
         state.buttonOpenRiddleColor = getColor(R.color.pink)

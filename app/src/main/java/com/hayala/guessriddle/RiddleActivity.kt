@@ -22,13 +22,9 @@ class RiddleActivity : AppCompatActivity() {
 
         binding.btnCheck.setOnClickListener { buttonCheckPressed() }
 
-        val shuffledList = listOfAnswers.shuffled()
-        // Создание нового списка и копирование перемешанных элементов
-        val newList = mutableListOf<String>()
-        shuffledList.forEach { newList.add(it) }
-
         val radioGroup = binding.radioGroupAnswers
-        for (option in newList) {
+
+        for (option in listOfAnswers.shuffled()) {
             val radioButton = RadioButton(this)
             radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
             radioButton.text = option
@@ -53,7 +49,7 @@ class RiddleActivity : AppCompatActivity() {
     }
 
 
-    fun buttonCheckPressed() {
+    private fun buttonCheckPressed() {
         val intent2 = Intent(this, MainActivity::class.java)
         intent2.putExtra("twoName", selectedButton.text.toString())
         setResult(RESULT_OK, intent2)
@@ -74,11 +70,10 @@ class RiddleActivity : AppCompatActivity() {
     @Parcelize
     class State(
         var buttonCheckIsEnabled: Boolean,
-        var buttonCheckColor: Int,
+        var buttonCheckColor: Int
     ) : Parcelable
 
     companion object {
-        @JvmStatic
-        private val KEY_STATE = "STATE"
+        @JvmStatic private val KEY_STATE = "STATE"
     }
 }

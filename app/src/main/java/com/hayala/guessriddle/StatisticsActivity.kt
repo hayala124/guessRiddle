@@ -11,6 +11,7 @@ class StatisticsActivity : AppCompatActivity() {
         binding = ActivityStatisticsBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
         binding.buttonGetTheMainPage.setOnClickListener { getTheMainPage() }
+
         val countRightAnswer = intent.getStringExtra("countRightAnswers")
         val countWrongAnswer = intent.getStringExtra("countWrongAnswers")
         binding.textCountRightAnswer.text = countRightAnswer.toString()
