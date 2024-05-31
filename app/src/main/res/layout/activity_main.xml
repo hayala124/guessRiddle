@@ -22,7 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:freezesText="true"
         android:gravity="center"
         android:padding="30dp"
         android:textSize="20sp"
@@ -62,7 +61,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="Ваш ответ"
-        android:freezesText="true"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/linearLayoutCountAnswers"
         app:layout_constraintStart_toStartOf="@id/linearLayoutBottomButton" />

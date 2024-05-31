@@ -14,6 +14,7 @@ class RiddleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRiddleBinding
     private lateinit var selectedButton: RadioButton
     private var listOfAnswers = listOf("замок", "лёд", "часы", "неправильно", "3", "1", "эхо", "якорь", "столовые приборы", "возможность", "проблемы", "возраст", "уроки", "вишня", "дорога", "лестница", "безрукий человек", "корм для животных", "бумеранг")
+
     private lateinit var state: State
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +33,7 @@ class RiddleActivity : AppCompatActivity() {
         }
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
-            selectedButton = findViewById<RadioButton>(checkedId)
+            selectedButton = findViewById(checkedId)
             state.buttonCheckColor = getColor(R.color.pink)
             state.buttonCheckIsEnabled = true
             binding.btnCheck.isEnabled = state.buttonCheckIsEnabled
@@ -41,9 +42,9 @@ class RiddleActivity : AppCompatActivity() {
         }
 
         state = savedInstanceState?.getParcelable(KEY_STATE) ?: State(
-                buttonCheckIsEnabled = false,
-                buttonCheckColor = getColor(R.color.gray)
-            )
+            buttonCheckIsEnabled = false,
+            buttonCheckColor = getColor(R.color.gray),
+        )
 
         saveState()
     }
@@ -71,6 +72,7 @@ class RiddleActivity : AppCompatActivity() {
     class State(
         var buttonCheckIsEnabled: Boolean,
         var buttonCheckColor: Int
+        //var intent: Unit
     ) : Parcelable
 
     companion object {

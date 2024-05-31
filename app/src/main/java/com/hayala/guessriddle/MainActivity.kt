@@ -1,6 +1,5 @@
 package com.hayala.guessriddle
 
-import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -11,7 +10,6 @@ import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.transition.Visibility
 import com.hayala.guessriddle.databinding.ActivityMainBinding
 import kotlinx.parcelize.Parcelize
 
@@ -37,8 +35,7 @@ class MainActivity : AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == RESULT_OK) {
                     val myAnswer = result.data?.getStringExtra("twoName").toString()
-                    binding.textYourAnswer.text = myAnswer
-
+                    state.textAnswer = myAnswer
                     // Изменения цвета и свойства enabled для кнопок после нажатия на кнопку Проверка (из 2 активити)
                     state.buttonAnswerIsEnabled = !state.buttonAnswerIsEnabled
                     state.buttonAnswerColor = getColor(R.color.gray)
@@ -54,6 +51,8 @@ class MainActivity : AppCompatActivity() {
                         state.textRiddleVisibility = !state.textRiddleVisibility
                         state.buttonExitVisibility = !state.buttonExitVisibility
                         state.buttonStartOverVisibility = !state.buttonStartOverVisibility
+
+                        saveState()
                     }
 
                     // Проверка правильности ответа пользователя
@@ -87,7 +86,9 @@ class MainActivity : AppCompatActivity() {
             countOfSolvedRiddles = 0,
             textAnswerColor = getColor(R.color.white),
             countRightAnswer = 0,
-            countWrongAnswer = 0
+            countWrongAnswer = 0,
+            textRiddle = " ",
+            textAnswer = " "
         )
         saveState()
     }
@@ -100,7 +101,7 @@ class MainActivity : AppCompatActivity() {
             "неправильно" to "Какое слово всегда пишется неправильно?",
             "3" to "На столе лежали три огурца и четыре яблока. Ребенок взял со стола одно яблоко. Сколько фруктов осталось на столе?",
             "1" to "Сколько раз из числа 1111 можно вычесть 1?",
-            "эхо" to "Что не может говорить, но ответит, если к нему обратятся?" ,
+            "эхо" to "Что не может говорить, но ответит, если к нему обратятся?",
             "якорь" to "Что ты выбрасываешь, когда хочешь использовать, и поднимаешь, когда не хочешь?",
             "столовые приборы" to "Что ты покупаешь, чтобы поесть, но никогда не съедаешь?",
             "возможность" to "У чего нет рук, но оно может постучаться к тебе, и если оно это сделало, то лучше открыть?",
@@ -115,14 +116,14 @@ class MainActivity : AppCompatActivity() {
     private fun openRiddleActivity() {
         keyOfMap = mapOfRiddlesAndAnswers.keys.random()
         riddle = mapOfRiddlesAndAnswers[keyOfMap].toString()
-        binding.textRiddle.text = riddle
+        state.textRiddle = riddle
         state.buttonOpenRiddleIsEnabled = !state.buttonOpenRiddleIsEnabled
         state.buttonAnswerIsEnabled = !state.buttonAnswerIsEnabled
         state.buttonOpenRiddleColor = getColor(R.color.gray)
         state.buttonAnswerColor = getColor(R.color.pink)
         state.countOfSolvedRiddles = binding.textCountAnswers.text.toString().toInt() + 1
         state.textAnswerColor = Color.WHITE
-        binding.textYourAnswer.text = " "
+        state.textAnswer = " "
 
         saveState()
     }
@@ -147,10 +148,10 @@ class MainActivity : AppCompatActivity() {
     private fun startOver() {
         init_map()
         state.textRiddleVisibility = !state.textRiddleVisibility
-        binding.textRiddle.text = " "
+        state.textRiddle = " "
         state.buttonStartOverVisibility = !state.buttonStartOverVisibility
         state.buttonExitVisibility = !state.buttonExitVisibility
-        binding.textYourAnswer.text = " "
+        state.textAnswer = " "
         state.textNameYourAnswerVisibility = !state.textNameYourAnswerVisibility
         state.textYourAnswerVisibility = !state.textYourAnswerVisibility
         state.countOfSolvedRiddles = 0
@@ -182,6 +183,8 @@ class MainActivity : AppCompatActivity() {
         btnAnswer.backgroundTintList = (ColorStateList.valueOf(state.buttonAnswerColor))
         textCountAnswers.setText(state.countOfSolvedRiddles.toString())
         textYourAnswer.setBackgroundColor(state.textAnswerColor)
+        textRiddle.setText(state.textRiddle)
+        textYourAnswer.setText(state.textAnswer)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -205,10 +208,13 @@ class MainActivity : AppCompatActivity() {
         var countOfSolvedRiddles: Int,
         var textAnswerColor: Int,
         var countRightAnswer: Int,
-        var countWrongAnswer: Int
+        var countWrongAnswer: Int,
+        var textRiddle: String,
+        var textAnswer: String,
     ) : Parcelable
 
     companion object {
-        @JvmStatic private val KEY_STATE = "STATE"
+        @JvmStatic
+        private val KEY_STATE = "STATE"
     }
 }
